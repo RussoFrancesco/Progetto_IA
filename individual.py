@@ -1,5 +1,4 @@
 import random
-import keras
 
 class Individual:
 
@@ -19,10 +18,10 @@ class Individual:
             self.randomize()
     
     def randomize(self):
-       self.dna[0] = random.randint(1, 8) #n strati convoluzionali
-       self.dna[1] = random.randint(32, 256) #dim strati convoluzionali
+       self.dna[0] = random.randint(2, 10) #n strati convoluzionali
+       self.dna[1] = random.randint(8, 32) #dim strati convoluzionali
        self.dna[2] = random.randint(2, 5) #n strati densi
-       self.dna[3] = random.randint(32, 256) #dim strati densi
+       self.dna[3] = self.dna[0]*self.dna[1] #dim strati densi
 
     def set_accuracy(self, accuracy):
         self.accuracy = accuracy
@@ -30,8 +29,11 @@ class Individual:
     def set_time(self, time):
         self.learning_time = time
     
-    def set_fitness(self):
-        self.fitness = ((self.accuracy*2)+(self.learning_time)/(self.accuracy+self.learning_time))/100
+    '''def evaluate(self):
+        self.fitness = ((self.accuracy*2)+(self.learning_time)/(self.accuracy+self.learning_time))/100'''
+    
+    def evaluate(self):
+        self.fitness = self.accuracy
 
 
     
