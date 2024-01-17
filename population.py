@@ -2,6 +2,7 @@ from individual import *
 import random 
 
 class Population:
+    
     mutation_rate = 0.1
 
     def __init__(self, size):

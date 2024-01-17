@@ -8,6 +8,7 @@ from keras import regularizers
 import matplotlib.pyplot as plt
 import numpy as np
 import time
+from math import log
 
 def create_model(n_conv, dim_conv, n_dense, dim_dense, model):
     for i in range(1, n_conv+1):
@@ -30,14 +31,16 @@ def create_model(n_conv, dim_conv, n_dense, dim_dense, model):
     
     model.add(layers.Dense(num_classes, activation='softmax'))
 
-def training(model):
+def training_and_evaluate(model):
     model.compile(optimizer='adam', loss=keras.losses.categorical_crossentropy, metrics=['accuracy'])
 
     start_time = time.time()
-    history = model.fit(train_images, train_labels, batch_size=64, epochs=5,
+    history = model.fit(train_images, train_labels, epochs=8,
                         validation_data=(test_images, test_labels))
     end_time = time.time() - start_time
-    return max(history.history["val_accuracy"]), end_time
+    results = model.evaluate(test_images, test_labels)
+    print("test loss, test acc:", results)
+    return results[1], end_time
     
 
 
@@ -74,10 +77,11 @@ while running:
         print(i, individual.dna[0], individual.dna[1], individual.dna[2], individual.dna[3])
         i += 1
         create_model(individual.dna[0], individual.dna[1], individual.dna[2], individual.dna[3], model)
-        accuracy, training_time = training(model)
+        accuracy, training_time = training_and_evaluate(model)
         individual.set_accuracy(accuracy)
         individual.set_time(training_time)
         print(accuracy, training_time)
+        print(accuracy/training_time)
     
     pop.evaluate()
     pop.select()

@@ -10,8 +10,9 @@ class Individual:
         self.fitness = 0.
 
         if dna1 != None and dna2 != None:
-            cross = random.randint(0, 3)
+            cross = random.randint(0, 2)
             self.dna = dna1[:cross] + dna2[cross:]
+            self.dna[3] = self.dna[0]*self.dna[1]
         elif dna1 != None:
             self.dna = dna1.copy()
         else:    
@@ -28,9 +29,6 @@ class Individual:
     
     def set_time(self, time):
         self.learning_time = time
-    
-    '''def evaluate(self):
-        self.fitness = ((self.accuracy*2)+(self.learning_time)/(self.accuracy+self.learning_time))/100'''
     
     def evaluate(self):
         self.fitness = self.accuracy
