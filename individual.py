@@ -13,7 +13,7 @@ class Individual:
         self.fitness = 0.
 
         if dna1 != None and dna2 != None:
-            cross = random.randint(0, 2)
+            cross = random.randint(1, 3)
             self.dna = dna1[:cross] + dna2[cross:]
             self.dna[3] = self.dna[0]*self.dna[1]
         elif dna1 != None:

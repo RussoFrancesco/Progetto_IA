@@ -57,7 +57,7 @@ num_classes = 10
 train_labels = to_categorical(train_labels, num_classes)
 test_labels = to_categorical(test_labels, num_classes)
 
-pop = Population(20, "individui_gene.csv")
+pop = Population(20)
 
 running = True
 
@@ -65,7 +65,8 @@ while running:
     # Creating a sequential model and adding layers to it
     if pop.generation == 0:
         pop.generation += 1
-    print(f"generazione {pop.generation}")
+    for individual in pop.individuals:
+        individual.write_on_file_gene("individui_gene.csv", pop.generation)
     for individual in pop.individuals:
         model = Sequential()
         individual.write_on_file_gene("individui_gene.csv", pop.generation)

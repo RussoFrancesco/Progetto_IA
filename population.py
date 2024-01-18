@@ -4,7 +4,7 @@ import ast
 
 class Population:
     
-    mutation_rate = 0.1
+    mutation_rate = 0.2
 
     def __init__(self, size, file=None):
         self.size = size
