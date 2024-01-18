@@ -37,9 +37,16 @@ class Population:
     def mutate(self):
         for i in self.offspring:
             if random.random() < self.mutation_rate:
-                i1 = random.randint(0,7)
-                i2 = random.randint(0,7)
-                i.dna[i1] = i2
+                mutate_gene = random.randint(0, 2)
+                if mutate_gene == 0:
+                    i.dna[0] = random.randint(2, 10)
+                    i.dna[3] = i.dna[0]*i.dna[1]
+                if mutate_gene == 1:
+                    i.dna[1] = random.randint(8, 32)
+                    i.dna[3] = i.dna[0]*i.dna[1]
+                if mutate_gene == 2:
+                    i.dna[2] = random.randint(2, 5)
+
     
     def getBestIndividual(self):
         bi = self.individuals[0]

@@ -1,4 +1,5 @@
 import random
+import math
 
 class Individual:
 
@@ -31,7 +32,7 @@ class Individual:
         self.learning_time = time
     
     def evaluate(self):
-        self.fitness = self.accuracy
+        self.fitness = self.accuracy / math.log10(self.learning_time)
 
 
     

@@ -80,8 +80,7 @@ while running:
         accuracy, training_time = training_and_evaluate(model)
         individual.set_accuracy(accuracy)
         individual.set_time(training_time)
-        print(accuracy, training_time)
-        print(accuracy/training_time)
+        
     
     pop.evaluate()
     pop.select()
