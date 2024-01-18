@@ -32,14 +32,12 @@ def training_and_evaluate(model):
     model.compile(optimizer='adam', loss=keras.losses.categorical_crossentropy, metrics=['accuracy'])
 
     start_time = time.time()
-    history = model.fit(train_images, train_labels, epochs=7,
-                        validation_data=(test_images, test_labels))
+    history = model.fit(train_images, train_labels, epochs=7)
     end_time = time.time() - start_time
     results = model.evaluate(test_images, test_labels)
     print("test loss, test acc:", results)
     return results[1], end_time
     
-
 
 (train_images, train_labels), (test_images, test_labels) = datasets.cifar10.load_data()
 
@@ -59,24 +57,24 @@ num_classes = 10
 train_labels = to_categorical(train_labels, num_classes)
 test_labels = to_categorical(test_labels, num_classes)
 
-pop = Population(20)
+pop = Population(20, "individui_gene.csv")
 
 running = True
-generazione = 0
 
 while running:
     # Creating a sequential model and adding layers to it
-    generazione += 1
-    print(f"generazione {generazione}")
+    if pop.generation == 0:
+        pop.generation += 1
+    print(f"generazione {pop.generation}")
     for individual in pop.individuals:
         model = Sequential()
-        individual.write_on_file_gene("individui_gene.csv", generazione)
+        individual.write_on_file_gene("individui_gene.csv", pop.generation)
         create_model(individual.dna[0], individual.dna[1], individual.dna[2], individual.dna[3], model)
         accuracy, training_time = training_and_evaluate(model)
         individual.set_accuracy(accuracy)
         individual.set_time(training_time)
         individual.evaluate()
-        individual.write_on_file_result("individui_result.csv", generazione)
+        individual.write_on_file_result("individui_result.csv", pop.generation)
     
     pop.select()
     pop.crossover()
@@ -86,6 +84,8 @@ while running:
 
     if pop.getBestIndividual().fitness >= 0.4:
         running = False
+    
+    pop.generation += 1
 
     ''' 
     model.add(layers.Conv2D(32, (3,3), padding='same', activation='relu', input_shape=(32,32,3)))

@@ -63,7 +63,8 @@ class Individual:
             if not file_exists:
                 writer.writeheader()
 
-            writer.writerow({'generazione': generazione, 'dna': self.dna, 'tempo': self.learning_time, 'accuracy': self.accuracy, 'fitness': self.fitness})
+            writer.writerow({'generazione': generazione, 'dna': self.dna, 'tempo': self.learning_time, 
+                             'accuracy': self.accuracy, 'fitness': self.fitness})
             file.close()
 
     

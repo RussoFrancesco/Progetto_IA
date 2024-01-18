@@ -1,5 +1,6 @@
 from individual import *
 import random 
+import ast
 
 class Population:
     
@@ -10,14 +11,25 @@ class Population:
         self.individuals = []
         self.selected = []
         self.offspring = []
+        self.generation = 0
         if file is None:
             for i in range(size):
                 self.individuals.append(Individual())
         else:
             with open(file, 'r') as f:
-                righe = list(csv.reader(f))
-                righe = righe[-size:]
-                self.individuals.append(Individual([riga['dna'] for riga in righe]))
+                righe = csv.DictReader(f)
+                next(righe)
+                lista_righe = list(righe)
+                lista_righe = lista_righe[::-1]
+                self.generation = lista_righe[0]["generazione"]
+                if len(lista_righe)<size:
+                    for i in range(len(lista_righe)):
+                        self.individuals.append(Individual(ast.literal_eval(lista_righe[i]["dna"])))
+                    for j in range(size-len(lista_righe)):
+                        self.individuals.append(Individual())
+                else:
+                    for i in range(size):
+                        self.individuals.append(Individual(ast.literal_eval(lista_righe[i]["dna"])))
 
     
     def select(self):
