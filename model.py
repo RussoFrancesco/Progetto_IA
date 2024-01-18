@@ -2,13 +2,10 @@ from population import *
 from individual import *
 import keras
 from keras.models import Sequential
-from keras import datasets, layers, models
+from keras import datasets, layers
 from keras.utils import to_categorical
-from keras import regularizers
-import matplotlib.pyplot as plt
-import numpy as np
 import time
-from math import log
+
 
 def create_model(n_conv, dim_conv, n_dense, dim_dense, model):
     for i in range(1, n_conv+1):
@@ -35,7 +32,7 @@ def training_and_evaluate(model):
     model.compile(optimizer='adam', loss=keras.losses.categorical_crossentropy, metrics=['accuracy'])
 
     start_time = time.time()
-    history = model.fit(train_images, train_labels, epochs=8,
+    history = model.fit(train_images, train_labels, epochs=7,
                         validation_data=(test_images, test_labels))
     end_time = time.time() - start_time
     results = model.evaluate(test_images, test_labels)
@@ -62,7 +59,7 @@ num_classes = 10
 train_labels = to_categorical(train_labels, num_classes)
 test_labels = to_categorical(test_labels, num_classes)
 
-pop = Population(5)
+pop = Population(20)
 
 running = True
 generazione = 0
@@ -71,25 +68,23 @@ while running:
     # Creating a sequential model and adding layers to it
     generazione += 1
     print(f"generazione {generazione}")
-    i = 0
     for individual in pop.individuals:
         model = Sequential()
-        print(i, individual.dna[0], individual.dna[1], individual.dna[2], individual.dna[3])
-        i += 1
+        individual.write_on_file_gene("individui_gene.csv", generazione)
         create_model(individual.dna[0], individual.dna[1], individual.dna[2], individual.dna[3], model)
         accuracy, training_time = training_and_evaluate(model)
         individual.set_accuracy(accuracy)
         individual.set_time(training_time)
-        
+        individual.evaluate()
+        individual.write_on_file_result("individui_result.csv", generazione)
     
-    pop.evaluate()
     pop.select()
     pop.crossover()
     pop.mutate()
 
     pop.individuals = pop.offspring
 
-    if pop.getBestIndividual().fitness >= 0.9:
+    if pop.getBestIndividual().fitness >= 0.4:
         running = False
 
     ''' 

@@ -5,24 +5,27 @@ class Population:
     
     mutation_rate = 0.1
 
-    def __init__(self, size):
+    def __init__(self, size, file=None):
         self.size = size
         self.individuals = []
         self.selected = []
         self.offspring = []
-        for i in range(size):
-            self.individuals.append(Individual())
-    
-    def evaluate(self):
-        for i in self.individuals:
-            i.evaluate()
+        if file is None:
+            for i in range(size):
+                self.individuals.append(Individual())
+        else:
+            with open(file, 'r') as f:
+                righe = list(csv.reader(f))
+                righe = righe[-size:]
+                self.individuals.append(Individual([riga['dna'] for riga in righe]))
+
     
     def select(self):
         selecting = True
         self.selected.clear()
         while selecting:
             for i in self.individuals:
-                if random.random() < i.accuracy:
+                if random.random() < i.fitness:
                     self.selected.append(i)                    
                 if len(self.selected) == self.size:
                     selecting = False
