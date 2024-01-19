@@ -73,3 +73,6 @@ class Population:
 
         return bi
 
+    def add_generation(self):
+        self.generation = int(self.generation) + 1
+

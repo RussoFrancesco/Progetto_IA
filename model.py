@@ -1,5 +1,6 @@
 from population import *
 from individual import *
+import tensorflow as tf
 import keras
 from keras.models import Sequential
 from keras import datasets, layers
@@ -57,19 +58,22 @@ num_classes = 10
 train_labels = to_categorical(train_labels, num_classes)
 test_labels = to_categorical(test_labels, num_classes)
 
-pop = Population(20)
-
+filename = None
+pop = Population(20, filename)
+writing = True
 running = True
 
 while running:
     # Creating a sequential model and adding layers to it
     if pop.generation == 0:
-        pop.generation += 1
+        pop.add_generation()
+    if writing is not False:
+        for individual in pop.individuals:
+            individual.write_on_file_gene("individui_gene.csv", pop.generation)
+    writing = True
     for individual in pop.individuals:
-        individual.write_on_file_gene("individui_gene.csv", pop.generation)
-    for individual in pop.individuals:
+        tf.keras.backend.clear_session()
         model = Sequential()
-        individual.write_on_file_gene("individui_gene.csv", pop.generation)
         create_model(individual.dna[0], individual.dna[1], individual.dna[2], individual.dna[3], model)
         accuracy, training_time = training_and_evaluate(model)
         individual.set_accuracy(accuracy)
@@ -86,7 +90,7 @@ while running:
     if pop.getBestIndividual().fitness >= 0.4:
         running = False
     
-    pop.generation += 1
+    pop.add_generation()
 
     ''' 
     model.add(layers.Conv2D(32, (3,3), padding='same', activation='relu', input_shape=(32,32,3)))
