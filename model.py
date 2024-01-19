@@ -1,11 +1,11 @@
 from population import *
 from individual import *
-import tensorflow as tf
 import keras
 from keras.models import Sequential
 from keras import datasets, layers
 from keras.utils import to_categorical
 import time
+import gc
 
 
 def create_model(n_conv, dim_conv, n_dense, dim_dense, model):
@@ -69,18 +69,21 @@ while running:
         pop.add_generation()
     if writing is not False:
         for individual in pop.individuals:
-            individual.write_on_file_gene("individui_gene.csv", pop.generation)
+            individual.write_on_file_gene("individui_gene2.csv", pop.generation)
     writing = True
     for individual in pop.individuals:
-        tf.keras.backend.clear_session()
+        keras.backend.clear_session()
         model = Sequential()
         create_model(individual.dna[0], individual.dna[1], individual.dna[2], individual.dna[3], model)
         accuracy, training_time = training_and_evaluate(model)
         individual.set_accuracy(accuracy)
         individual.set_time(training_time)
         individual.evaluate()
-        individual.write_on_file_result("individui_result.csv", pop.generation)
-    
+        individual.write_on_file_result("individui_result2.csv", pop.generation)
+        del model
+        keras.backend.clear_session()
+        gc.collect()
+
     pop.select()
     pop.crossover()
     pop.mutate()
