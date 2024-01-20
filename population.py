@@ -34,10 +34,12 @@ class Population:
     
     def select(self):
         selecting = True
+        total_fitness = sum(i.fitness for i in self.individuals)
         self.selected.clear()
         while selecting:
             for i in self.individuals:
-                if random.random() < i.fitness:
+                probability = (i.fitness / total_fitness) * 100
+                if random.random() < probability:
                     self.selected.append(i)                    
                 if len(self.selected) == self.size:
                     selecting = False
