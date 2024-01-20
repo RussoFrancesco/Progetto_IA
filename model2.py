@@ -58,9 +58,9 @@ num_classes = 10
 train_labels = to_categorical(train_labels, num_classes)
 test_labels = to_categorical(test_labels, num_classes)
 
-filename = "individui_gene.csv"
+filename = None
 pop = Population(20, filename)
-writing = False
+writing = True
 running = True
 
 while running:
@@ -69,7 +69,7 @@ while running:
         pop.add_generation()
     if writing is not False:
         for individual in pop.individuals:
-            individual.write_on_file_gene("individui_gene.csv", pop.generation)
+            individual.write_on_file_gene("individui_gene2.csv", pop.generation)
     writing = True
     for individual in pop.individuals:
         keras.backend.clear_session()
@@ -79,7 +79,7 @@ while running:
         individual.set_accuracy(accuracy)
         individual.set_time(training_time)
         individual.evaluate()
-        individual.write_on_file_result("individui_result.csv", pop.generation)
+        individual.write_on_file_result("individui_result2.csv", pop.generation)
         del model
         keras.backend.clear_session()
         gc.collect()
@@ -95,39 +95,3 @@ while running:
         running = False
     
     pop.add_generation()
-
-    ''' 
-    model.add(layers.Conv2D(32, (3,3), padding='same', activation='relu', input_shape=(32,32,3)))
-    model.add(layers.BatchNormalization())
-    model.add(layers.Conv2D(32, (3,3), padding='same', activation='relu'))
-    model.add(layers.BatchNormalization())
-    model.add(layers.MaxPooling2D(pool_size=(2,2)))
-    model.add(layers.Dropout(0.3))
-
-    model.add(layers.Conv2D(64, (3,3), padding='same', activation='relu'))
-    model.add(layers.BatchNormalization())
-    model.add(layers.Conv2D(64, (3,3), padding='same', activation='relu'))
-    model.add(layers.BatchNormalization())
-    model.add(layers.MaxPooling2D(pool_size=(2,2)))
-    model.add(layers.Dropout(0.5))
-
-    model.add(layers.Conv2D(128, (3,3), padding='same', activation='relu'))
-    model.add(layers.BatchNormalization())
-    model.add(layers.Conv2D(128, (3,3), padding='same', activation='relu'))
-    model.add(layers.BatchNormalization())
-    model.add(layers.MaxPooling2D(pool_size=(2,2)))
-    model.add(layers.Dropout(0.5))
-
-    model.add(layers.Flatten())
-    model.add(layers.Dense(128, activation='relu'))
-    model.add(layers.BatchNormalization())
-    model.add(layers.Dropout(0.5))
-    model.add(layers.Dense(num_classes, activation='softmax'))    # num_classes = 10
-    '''
-    
-
-
-
-
-
-
