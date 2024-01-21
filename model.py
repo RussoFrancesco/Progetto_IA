@@ -22,7 +22,7 @@ def create_model(n_conv, dim_conv, n_dense, dim_dense, model):
     
     model.add(layers.Flatten())
     
-    for j in range(1, n_dense):
+    for j in range(0, n_dense):
         model.add(layers.Dense(dim_dense, activation='relu'))
         model.add(layers.BatchNormalization())
         model.add(layers.Dropout(0.5))
@@ -33,7 +33,7 @@ def training_and_evaluate(model):
     model.compile(optimizer='adam', loss=keras.losses.categorical_crossentropy, metrics=['accuracy'])
 
     start_time = time.time()
-    history = model.fit(train_images, train_labels, epochs=7)
+    history = model.fit(train_images, train_labels, epochs=7, verbose=2)
     end_time = time.time() - start_time
     results = model.evaluate(test_images, test_labels)
     print("test loss, test acc:", results)
@@ -58,7 +58,7 @@ num_classes = 10
 train_labels = to_categorical(train_labels, num_classes)
 test_labels = to_categorical(test_labels, num_classes)
 
-filename = "individui_gene.csv"
+filename = "individui_gene_2.csv"
 pop = Population(20, filename)
 writing = False
 running = True
@@ -69,7 +69,7 @@ while running:
         pop.add_generation()
     if writing is not False:
         for individual in pop.individuals:
-            individual.write_on_file_gene("individui_gene.csv", pop.generation)
+            individual.write_on_file_gene("individui_gene_2.csv", pop.generation)
     writing = True
     for individual in pop.individuals:
         keras.backend.clear_session()
@@ -79,7 +79,7 @@ while running:
         individual.set_accuracy(accuracy)
         individual.set_time(training_time)
         individual.evaluate()
-        individual.write_on_file_result("individui_result.csv", pop.generation)
+        individual.write_on_file_result("individui_result_2.csv", pop.generation)
         del model
         keras.backend.clear_session()
         gc.collect()

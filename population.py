@@ -33,17 +33,17 @@ class Population:
 
     
     def select(self):
-        selecting = True
-        total_fitness = sum(i.fitness for i in self.individuals)
+        self.normalize_fitness()
+        selecting=True
         self.selected.clear()
         while selecting:
             for i in self.individuals:
-                probability = (i.fitness / total_fitness) * 100
-                if random.random() < probability:
-                    self.selected.append(i)                    
+                if random.random() < i.norm_fitness :
+                    self.selected.append(i)
                 if len(self.selected) == self.size:
-                    selecting = False
+                    selecting=False
                     break
+
     
     def crossover(self):
         for i in range(self.size):
@@ -56,15 +56,17 @@ class Population:
     def mutate(self):
         for i in self.offspring:
             if random.random() < self.mutation_rate:
-                mutate_gene = random.randint(0, 2)
+                mutate_gene = random.randint(0, 3)
                 if mutate_gene == 0:
                     i.dna[0] = random.randint(2, 10)
-                    i.dna[3] = i.dna[0]*i.dna[1]
+                    #i.dna[3] = i.dna[0]*i.dna[1]
                 if mutate_gene == 1:
                     i.dna[1] = random.randint(8, 32)
-                    i.dna[3] = i.dna[0]*i.dna[1]
+                    #i.dna[3] = i.dna[0]*i.dna[1]
                 if mutate_gene == 2:
                     i.dna[2] = random.randint(2, 5)
+                if mutate_gene == 3:
+                    i.dna[3] = random.randint(16, 320)
 
     
     def getBestIndividual(self):
@@ -80,3 +82,13 @@ class Population:
     def add_generation(self):
         self.generation = int(self.generation) + 1
 
+    def normalize_fitness(self):
+        min_fit = 1
+        max_fit = 0
+        for i in self.individuals:
+            if i.fitness < min_fit:
+                min_fit = i.fitness
+            elif i.fitness > max_fit:
+                max_fit = i.fitness
+        for i in self.individuals:
+            i.norm_fitness = (i.fitness - min_fit) / (max_fit - min_fit)

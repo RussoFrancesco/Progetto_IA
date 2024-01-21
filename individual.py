@@ -11,11 +11,12 @@ class Individual:
         self.accuracy = 0
         self.learning_time = 0
         self.fitness = 0.
+        self.norm_fitness = 0
 
         if dna1 != None and dna2 != None:
-            cross = random.randint(1, 3)
+            cross = random.randint(1, len(self.dna)-1)
             self.dna = dna1[:cross] + dna2[cross:]
-            self.dna[3] = self.dna[0]*self.dna[1]
+            #self.dna[3] = self.dna[0]*self.dna[1]
         elif dna1 != None:
             self.dna = dna1.copy()
         else:    
@@ -24,8 +25,9 @@ class Individual:
     def randomize(self):
        self.dna[0] = random.randint(2, 10) #n strati convoluzionali
        self.dna[1] = random.randint(8, 32) #dim strati convoluzionali
-       self.dna[2] = random.randint(2, 5) #n strati densi
-       self.dna[3] = self.dna[0]*self.dna[1] #dim strati densi
+       self.dna[2] = random.randint(1, 5) #n strati densi
+       #self.dna[3] = self.dna[0]*self.dna[1] #dim strati densi
+       self.dna[3] = random.randint(16, 320)
 
     def set_accuracy(self, accuracy):
         self.accuracy = accuracy
