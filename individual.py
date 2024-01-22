@@ -69,4 +69,21 @@ class Individual:
                              'accuracy': self.accuracy, 'fitness': self.fitness})
             file.close()
 
+    def write_on_file_result_norm(self, filename, generazione):
+        # Verifica se il file esiste già
+        file_exists = os.path.isfile(filename)
+
+        with open(filename, mode='a', newline='') as file:
+            fieldnames = ['generazione', 'dna', 'tempo', 'accuracy', 'fitness', 'fitness_normalizzata']
+            writer = csv.DictWriter(file, fieldnames=fieldnames)
+
+            # Scrivi gli header solo se il file è vuoto
+            if not file_exists:
+                writer.writeheader()
+
+            writer.writerow({'generazione': generazione, 'dna': self.dna, 'tempo': self.learning_time, 
+                             'accuracy': self.accuracy, 'fitness': self.fitness, 'fitness_normalizzata': self.norm_fitness})
+            file.close()
+
+
     

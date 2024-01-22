@@ -30,10 +30,13 @@ class Population:
                 else:
                     for i in range(size):
                         self.individuals.append(Individual(ast.literal_eval(lista_righe[i]["dna"])))
+                        self.individuals = self.individuals[::-1]
 
     
     def select(self):
         self.normalize_fitness()
+        for i in self.individuals:
+            i.write_on_file_result_norm("individui_result_norm.csv", self.generation)
         selecting=True
         self.selected.clear()
         while selecting:
@@ -46,12 +49,13 @@ class Population:
 
     
     def crossover(self):
+        self.offspring.clear()
         for i in range(self.size):
             i1 = random.randint(0,self.size-1)
             i2 = random.randint(0,self.size-1)
             self.offspring.append(Individual(self.selected[i1].dna, self.selected[i2].dna))
-        if len(self.offspring) > self.size:
-            self.offspring = self.offspring[:self.size]
+        #if len(self.offspring) > self.size:
+        #    self.offspring = self.offspring[:self.size]
 
     def mutate(self):
         for i in self.offspring:

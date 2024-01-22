@@ -79,7 +79,7 @@ while running:
         individual.set_accuracy(accuracy)
         individual.set_time(training_time)
         individual.evaluate()
-        individual.write_on_file_result("individui_result_2.csv", pop.generation)
+        individual.write_on_file_result("individui_gene_result_2.csv", pop.generation)
         del model
         keras.backend.clear_session()
         gc.collect()
