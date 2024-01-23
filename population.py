@@ -30,7 +30,6 @@ class Population:
                 else:
                     for i in range(size):
                         self.individuals.append(Individual(ast.literal_eval(lista_righe[i]["dna"])))
-                        self.individuals = self.individuals[::-1]
 
     
     def select(self):
@@ -68,7 +67,7 @@ class Population:
                     i.dna[1] = random.randint(8, 32)
                     #i.dna[3] = i.dna[0]*i.dna[1]
                 if mutate_gene == 2:
-                    i.dna[2] = random.randint(2, 5)
+                    i.dna[2] = random.randint(1, 5)
                 if mutate_gene == 3:
                     i.dna[3] = random.randint(16, 320)
 
