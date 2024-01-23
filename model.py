@@ -58,7 +58,7 @@ num_classes = 10
 train_labels = to_categorical(train_labels, num_classes)
 test_labels = to_categorical(test_labels, num_classes)
 
-filename = "individui_gene_2.csv"
+filename = "individui_gene.csv"
 pop = Population(20, filename)
 writing = False
 running = True
@@ -69,7 +69,7 @@ while running:
         pop.add_generation()
     if writing is not False:
         for individual in pop.individuals:
-            individual.write_on_file_gene("individui_gene_2.csv", pop.generation)
+            individual.write_on_file_gene("individui_gene.csv", pop.generation)
     writing = True
     for individual in pop.individuals:
         keras.backend.clear_session()
@@ -79,7 +79,7 @@ while running:
         individual.set_accuracy(accuracy)
         individual.set_time(training_time)
         individual.evaluate()
-        individual.write_on_file_result("individui_gene_result_2.csv", pop.generation)
+        individual.write_on_file_result("individui_gene_result.csv", pop.generation)
         del model
         keras.backend.clear_session()
         gc.collect()
