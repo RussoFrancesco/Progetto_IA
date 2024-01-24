@@ -91,7 +91,7 @@ while running:
 
     pop.individuals = pop.offspring
 
-    if pop.getBestIndividual().fitness >= 0.4:
+    if pop.getBestIndividual().fitness >= 0.32:
         running = False
     
     pop.add_generation()
